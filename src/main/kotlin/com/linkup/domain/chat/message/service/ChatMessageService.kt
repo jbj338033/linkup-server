@@ -1,5 +1,3 @@
-package com.kakaotalk.domain.chat.message.service
+package com.linkup.domain.chat.message.service
 
-interface ChatMessageService {
-    
-}
+interface ChatMessageService

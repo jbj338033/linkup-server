@@ -1,9 +1,9 @@
-package com.kakaotalk.domain.auth.service
+package com.linkup.domain.auth.service
 
-import com.kakaotalk.domain.auth.dto.request.LoginRequest
-import com.kakaotalk.domain.auth.dto.request.ReissueRequest
-import com.kakaotalk.domain.auth.dto.request.SignUpRequest
-import com.kakaotalk.global.security.jwt.dto.JwtResponse
+import com.linkup.domain.auth.dto.request.LoginRequest
+import com.linkup.domain.auth.dto.request.ReissueRequest
+import com.linkup.domain.auth.dto.request.SignUpRequest
+import com.linkup.global.security.jwt.dto.JwtResponse
 
 interface AuthService {
     fun login(request: LoginRequest): JwtResponse
@@ -11,5 +11,6 @@ interface AuthService {
     fun reissue(request: ReissueRequest): JwtResponse
 
     fun checkEmail(email: String): Boolean
+    fun checkLinkupId(linkupId: String): Boolean
     fun checkPhoneNumber(phoneNumber: String): Boolean
 }

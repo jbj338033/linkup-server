@@ -1,4 +1,4 @@
-package com.kakaotalk.global.security.jwt.enums
+package com.linkup.global.security.jwt.enums
 
 enum class JwtType {
     ACCESS,

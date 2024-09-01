@@ -1,11 +1,11 @@
-package com.kakaotalk
+package com.linkup
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class KakaotalkApplication
+class LinkupApplication
 
 fun main(args: Array<String>) {
-    runApplication<KakaotalkApplication>(*args)
+    runApplication<LinkupApplication>(*args)
 }

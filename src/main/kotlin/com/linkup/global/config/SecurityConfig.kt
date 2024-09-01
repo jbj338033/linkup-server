@@ -1,9 +1,9 @@
-package com.kakaotalk.global.config
+package com.linkup.global.config
 
-import com.kakaotalk.global.security.jwt.filter.JwtAuthenticationFilter
-import com.kakaotalk.global.security.jwt.filter.JwtExceptionFilter
-import com.kakaotalk.global.security.jwt.handler.JwtAccessDeniedHandler
-import com.kakaotalk.global.security.jwt.handler.JwtAuthenticationEntryPoint
+import com.linkup.global.security.jwt.filter.JwtAuthenticationFilter
+import com.linkup.global.security.jwt.filter.JwtExceptionFilter
+import com.linkup.global.security.jwt.handler.JwtAccessDeniedHandler
+import com.linkup.global.security.jwt.handler.JwtAuthenticationEntryPoint
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
@@ -31,9 +31,10 @@ class SecurityConfig {
     fun roleHierarchy(): RoleHierarchy = RoleHierarchyImpl.fromHierarchy("ROLE_ADMIN > ROLE_USER")
 
     @Bean
-    fun filterChain(http: HttpSecurity, jwtAccessDeniedHandler: JwtAccessDeniedHandler,
-                    jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint,
-                    jwtAuthenticationFilter: JwtAuthenticationFilter, jwtExceptionFilter: JwtExceptionFilter
+    fun filterChain(
+        http: HttpSecurity, jwtAccessDeniedHandler: JwtAccessDeniedHandler,
+        jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint,
+        jwtAuthenticationFilter: JwtAuthenticationFilter, jwtExceptionFilter: JwtExceptionFilter
     ): SecurityFilterChain = http
         .csrf { it.disable() }
         .cors { it.configurationSource(corsConfigurationSource()) }
@@ -51,12 +52,32 @@ class SecurityConfig {
             it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         }
 
-        .authorizeHttpRequests { it
-            .requestMatchers(HttpMethod.GET, "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-            .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/signup", "/auth/reissue").anonymous()
-            .requestMatchers(HttpMethod.GET, "/auth/email", "/auth/phone-number").permitAll()
-            .requestMatchers(HttpMethod.GET, "/users/me").authenticated()
-            .anyRequest().authenticated()
+        .authorizeHttpRequests {
+            it
+                .requestMatchers(HttpMethod.GET, "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+
+                .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/signup", "/auth/reissue").anonymous()
+                .requestMatchers(HttpMethod.GET, "/auth/check").permitAll()
+
+                .requestMatchers(HttpMethod.GET, "/users/me").authenticated()
+                .requestMatchers(HttpMethod.PATCH, "/users/me").authenticated()
+
+                .requestMatchers(HttpMethod.POST, "/files/upload").permitAll()
+
+                .requestMatchers(HttpMethod.GET, "/friends").authenticated()
+                .requestMatchers(HttpMethod.DELETE, "/friends/{friendId}").authenticated()
+
+                .requestMatchers(HttpMethod.GET, "/friends/requests").authenticated()
+                .requestMatchers(
+                    HttpMethod.POST,
+                    "/friends/requests",
+                    "/friends/requests/accept",
+                    "/friends/requests/reject",
+                    "/friends/requests/cancel"
+                ).authenticated()
+
+                .requestMatchers(HttpMethod.GET, "/uploads/**").permitAll()
+                .anyRequest().authenticated()
         }
 
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
@@ -67,10 +88,11 @@ class SecurityConfig {
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource = UrlBasedCorsConfigurationSource().apply {
         registerCorsConfiguration("/**", CorsConfiguration().apply {
-        allowedOriginPatterns = listOf("*")
-        allowedMethods = listOf("GET", "POST", "PUT", "DELETE")
-        allowedHeaders = listOf("*")
-        allowCredentials = true
-        maxAge = 3600
-    })}
+            allowedOriginPatterns = listOf("*")
+            allowedMethods = listOf("GET", "POST", "PUT", "DELETE")
+            allowedHeaders = listOf("*")
+            allowCredentials = true
+            maxAge = 3600
+        })
+    }
 }

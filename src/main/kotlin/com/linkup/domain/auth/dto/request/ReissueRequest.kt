@@ -1,4 +1,4 @@
-package com.kakaotalk.domain.auth.dto.request
+package com.linkup.domain.auth.dto.request
 
 import jakarta.validation.constraints.NotBlank
 

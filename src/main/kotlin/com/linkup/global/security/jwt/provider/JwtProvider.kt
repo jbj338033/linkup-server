@@ -1,14 +1,14 @@
-package com.kakaotalk.global.security.jwt.provider
+package com.linkup.global.security.jwt.provider
 
-import com.kakaotalk.domain.user.domain.entity.User
-import com.kakaotalk.domain.user.error.UserError
-import com.kakaotalk.domain.user.repository.UserRepository
-import com.kakaotalk.global.error.CustomException
-import com.kakaotalk.global.security.details.CustomUserDetails
-import com.kakaotalk.global.security.jwt.config.JwtProperties
-import com.kakaotalk.global.security.jwt.dto.JwtResponse
-import com.kakaotalk.global.security.jwt.enums.JwtType
-import com.kakaotalk.global.security.jwt.error.JwtError
+import com.linkup.domain.user.domain.entity.User
+import com.linkup.domain.user.error.UserError
+import com.linkup.domain.user.repository.UserRepository
+import com.linkup.global.error.CustomException
+import com.linkup.global.security.details.CustomUserDetails
+import com.linkup.global.security.jwt.config.JwtProperties
+import com.linkup.global.security.jwt.dto.JwtResponse
+import com.linkup.global.security.jwt.enums.JwtType
+import com.linkup.global.security.jwt.error.JwtError
 import io.jsonwebtoken.*
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.data.redis.core.RedisTemplate
@@ -16,7 +16,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Component
 import java.nio.charset.StandardCharsets
-import java.util.Date
+import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.crypto.spec.SecretKeySpec
 
@@ -26,7 +26,10 @@ class JwtProvider(
     private val redisTemplate: RedisTemplate<String, String>,
     private val userRepository: UserRepository
 ) {
-    private val key = SecretKeySpec(jwtProperties.secretKey.toByteArray(StandardCharsets.UTF_8), Jwts.SIG.HS512.key().build().algorithm)
+    private val key = SecretKeySpec(
+        jwtProperties.secretKey.toByteArray(StandardCharsets.UTF_8),
+        Jwts.SIG.HS512.key().build().algorithm
+    )
 
     fun generateToken(user: User): JwtResponse {
         val now = Date()
@@ -53,7 +56,12 @@ class JwtProvider(
             .signWith(key)
             .compact()
 
-        redisTemplate.opsForValue().set("refreshToken:${user.email}", refreshToken, jwtProperties.refreshTokenExpiration, TimeUnit.MILLISECONDS)
+        redisTemplate.opsForValue().set(
+            "refreshToken:${user.email}",
+            refreshToken,
+            jwtProperties.refreshTokenExpiration,
+            TimeUnit.MILLISECONDS
+        )
 
         return JwtResponse(accessToken, refreshToken)
     }
@@ -68,9 +76,12 @@ class JwtProvider(
         return UsernamePasswordAuthenticationToken(details, null, details.authorities)
     }
 
-    fun extractToken(request: HttpServletRequest) = request.getHeader(jwtProperties.header)?.removePrefix(jwtProperties.prefix)
+    fun extractToken(request: HttpServletRequest) =
+        request.getHeader(jwtProperties.header)?.removePrefix(jwtProperties.prefix)
 
-    fun getType(token: String) = JwtType.valueOf(Jwts.parser().verifyWith(key).requireIssuer(jwtProperties.issuer).build().parseSignedClaims(token).header.type)
+    fun getType(token: String) = JwtType.valueOf(
+        Jwts.parser().verifyWith(key).requireIssuer(jwtProperties.issuer).build().parseSignedClaims(token).header.type
+    )
 
     private fun getClaims(token: String): Claims {
         try {

@@ -1,1 +1,1 @@
-rootProject.name = "kakaotalk"
+rootProject.name = "linkup"

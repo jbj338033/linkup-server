@@ -1,4 +1,4 @@
-package com.kakaotalk.global.security.jwt.config
+package com.linkup.global.security.jwt.config
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 

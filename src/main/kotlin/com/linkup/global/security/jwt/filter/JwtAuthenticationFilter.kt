@@ -1,6 +1,6 @@
-package com.kakaotalk.global.security.jwt.filter
+package com.linkup.global.security.jwt.filter
 
-import com.kakaotalk.global.security.jwt.provider.JwtProvider
+import com.linkup.global.security.jwt.provider.JwtProvider
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse

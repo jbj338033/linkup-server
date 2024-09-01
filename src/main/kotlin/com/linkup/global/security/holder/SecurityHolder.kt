@@ -1,6 +1,6 @@
-package com.kakaotalk.global.security.holder
+package com.linkup.global.security.holder
 
-import com.kakaotalk.domain.user.domain.entity.User
+import com.linkup.domain.user.domain.entity.User
 
 interface SecurityHolder {
     val user: User

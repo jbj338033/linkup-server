@@ -1,13 +1,11 @@
-package com.kakaotalk.domain.user.domain.entity
+package com.linkup.domain.user.domain.entity
 
-import com.kakaotalk.domain.user.domain.enums.UserGender
-import com.kakaotalk.domain.user.domain.enums.UserRole
-import com.kakaotalk.global.common.BaseTimeEntity
+import com.linkup.domain.user.domain.enums.UserGender
+import com.linkup.domain.user.domain.enums.UserRole
+import com.linkup.global.common.BaseTimeEntity
 import jakarta.persistence.*
-import org.hibernate.annotations.ColumnDefault
-import org.hibernate.validator.constraints.URL
 import java.time.LocalDate
-import java.util.UUID
+import java.util.*
 
 @Entity
 @Table(name = "users")
@@ -47,4 +45,4 @@ class User(
     @Enumerated(EnumType.STRING)
     @Column(name = "gender", nullable = false)
     var gender: UserGender
-): BaseTimeEntity()
+) : BaseTimeEntity()

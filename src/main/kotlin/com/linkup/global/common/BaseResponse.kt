@@ -1,4 +1,4 @@
-package com.kakaotalk.global.common
+package com.linkup.global.common
 
 import org.springframework.http.ResponseEntity
 
@@ -9,6 +9,7 @@ data class BaseResponse<T>(
     val success: Boolean
 ) {
     companion object {
-        fun of(data: Any, status: Int = 200, message: String = "success", success: Boolean = true) = ResponseEntity.status(status).body(BaseResponse(data, status, message, success))
+        fun of(data: Any, status: Int = 200, message: String = "success", success: Boolean = true) =
+            ResponseEntity.status(status).body(BaseResponse(data, status, message, success))
     }
 }

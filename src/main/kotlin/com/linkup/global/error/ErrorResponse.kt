@@ -1,4 +1,4 @@
-package com.kakaotalk.global.error
+package com.linkup.global.error
 
 import org.springframework.http.ResponseEntity
 
@@ -8,10 +8,12 @@ data class ErrorResponse(
     val message: String
 ) {
     companion object {
-        fun of(exception: CustomException) = ResponseEntity.status(exception.status).body(ErrorResponse(
-            code = exception.code,
-            status = exception.status,
-            message = exception.message
-        ))
+        fun of(exception: CustomException) = ResponseEntity.status(exception.status).body(
+            ErrorResponse(
+                code = exception.code,
+                status = exception.status,
+                message = exception.message
+            )
+        )
     }
 }

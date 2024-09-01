@@ -1,1 +1,32 @@
-spring.application.name=kakaotalk
+spring:
+  datasource:
+    url: 'jdbc:postgresql://localhost:5432/kakaotalk'
+    username: 'kakaotalk'
+    password: 'pqowieur!!'
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+  data:
+    redis:
+      host: 'localhost'
+      port: 6379
+      password: 'pqowieur!!'
+  rabbitmq:
+    host: 'localhost'
+    port: 5672
+    username: 'kakaotalk'
+    password: 'pqowieur!!'
+    virtual-host: '/'
+  jwt:
+    secret-key: 'Oqjwasdf013j41idfnalksnf123awofdajisflkjnj3145uo13hrjlena123iuiajkfdhjkashdfu1i3iojkhasdbfhuhu1oh3ujhfjdahjd'
+    access-token-expiration: 360000
+    refresh-token-expiration: 8640000
+    issuer: 'kakaotalk'
+    prefix: 'Bearer '
+    header: 'Authorization'
+  servlet:
+    multipart:
+      location: /tmp
+      max-file-size: 500MB
+      max-request-size: 500MB

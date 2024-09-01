@@ -1,7 +1,8 @@
-package com.kakaotalk.domain.chat.room.domain.entity
+package com.linkup.domain.chat.room.domain.entity
 
+import com.linkup.global.common.BaseTimeEntity
 import jakarta.persistence.*
-import java.util.UUID
+import java.util.*
 
 @Entity
 @Table(name = "chat_rooms")
@@ -12,4 +13,4 @@ class ChatRoom(
 
     @Column(name = "name", nullable = false)
     val name: String,
-)
+) : BaseTimeEntity()

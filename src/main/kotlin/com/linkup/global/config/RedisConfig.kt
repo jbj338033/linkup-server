@@ -1,4 +1,4 @@
-package com.kakaotalk.global.config
+package com.linkup.global.config
 
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties
 import org.springframework.context.annotation.Bean

@@ -1,7 +1,8 @@
-package com.kakaotalk.domain.chat.message.domain.entity
+package com.linkup.domain.chat.message.domain.entity
 
-import com.kakaotalk.domain.chat.room.domain.entity.ChatRoom
-import com.kakaotalk.domain.user.domain.entity.User
+import com.linkup.domain.chat.room.domain.entity.ChatRoom
+import com.linkup.domain.user.domain.entity.User
+import com.linkup.global.common.BaseTimeEntity
 import jakarta.persistence.*
 
 @Entity
@@ -21,4 +22,4 @@ class ChatMessage(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender_id", nullable = false)
     val sender: User
-)
+) : BaseTimeEntity()

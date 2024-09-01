@@ -1,4 +1,4 @@
-package com.kakaotalk.global.common
+package com.linkup.global.common
 
 import jakarta.persistence.Column
 import jakarta.persistence.EntityListeners
@@ -12,7 +12,7 @@ import java.time.LocalDateTime
 @EntityListeners(AuditingEntityListener::class)
 abstract class BaseTimeEntity(
     @CreatedDate
-    @Column(name = "created_at", nullable = false,   updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private var _createdAt: LocalDateTime? = null,
 
     @LastModifiedDate

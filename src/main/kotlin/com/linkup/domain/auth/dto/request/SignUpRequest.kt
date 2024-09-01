@@ -1,6 +1,6 @@
-package com.kakaotalk.domain.auth.dto.request
+package com.linkup.domain.auth.dto.request
 
-import com.kakaotalk.domain.user.domain.enums.UserGender
+import com.linkup.domain.user.domain.enums.UserGender
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import java.time.LocalDate

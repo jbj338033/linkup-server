@@ -1,8 +1,8 @@
-package com.kakaotalk.global.security.jwt.filter
+package com.linkup.global.security.jwt.filter
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.kakaotalk.global.error.CustomException
-import com.kakaotalk.global.error.ErrorResponse
+import com.linkup.global.error.CustomException
+import com.linkup.global.error.ErrorResponse
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -12,7 +12,7 @@ import org.springframework.web.filter.OncePerRequestFilter
 @Component
 class JwtExceptionFilter(
     private val objectMapper: ObjectMapper
-): OncePerRequestFilter() {
+) : OncePerRequestFilter() {
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,

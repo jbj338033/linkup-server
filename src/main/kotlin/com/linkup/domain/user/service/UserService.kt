@@ -1,7 +1,7 @@
-package com.kakaotalk.domain.user.service
+package com.linkup.domain.user.service
 
-import com.kakaotalk.domain.user.dto.request.UserUpdateRequest
-import com.kakaotalk.domain.user.dto.response.UserResponse
+import com.linkup.domain.user.dto.request.UserUpdateRequest
+import com.linkup.domain.user.dto.response.UserResponse
 
 interface UserService {
     fun getMe(): UserResponse

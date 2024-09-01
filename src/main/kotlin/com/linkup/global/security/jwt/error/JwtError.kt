@@ -1,9 +1,9 @@
-package com.kakaotalk.global.security.jwt.error
+package com.linkup.global.security.jwt.error
 
-import com.kakaotalk.global.error.CustomError
+import com.linkup.global.error.CustomError
 import org.springframework.http.HttpStatus
 
-enum class JwtError(override val status: HttpStatus, override val message: String): CustomError {
+enum class JwtError(override val status: HttpStatus, override val message: String) : CustomError {
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "만료된 토큰입니다."),
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다."),
     UNSUPPORTED_TOKEN(HttpStatus.UNAUTHORIZED, "지원하지 않는 토큰입니다."),

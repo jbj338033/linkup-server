@@ -1,6 +1,6 @@
-package com.kakaotalk.domain.user.dto.request
+package com.linkup.domain.user.dto.request
 
-import com.kakaotalk.domain.user.domain.enums.UserGender
+import com.linkup.domain.user.domain.enums.UserGender
 import java.time.LocalDate
 
 data class UserUpdateRequest(

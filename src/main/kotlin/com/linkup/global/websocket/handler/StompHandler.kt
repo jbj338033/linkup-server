@@ -1,7 +1,6 @@
-package com.kakaotalk.global.websocket.handler
+package com.linkup.global.websocket.handler
 
 import org.springframework.stereotype.Component
 
 @Component
-class StompHandler {
-}
+class StompHandler

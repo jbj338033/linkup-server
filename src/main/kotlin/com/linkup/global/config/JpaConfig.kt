@@ -1,4 +1,4 @@
-package com.kakaotalk.global.config
+package com.linkup.global.config
 
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing

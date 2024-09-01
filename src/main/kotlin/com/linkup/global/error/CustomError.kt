@@ -1,4 +1,4 @@
-package com.kakaotalk.global.error
+package com.linkup.global.error
 
 import org.springframework.http.HttpStatus
 
