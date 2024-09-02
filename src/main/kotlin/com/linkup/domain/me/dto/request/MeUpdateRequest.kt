@@ -1,9 +1,9 @@
-package com.linkup.domain.user.dto.request
+package com.linkup.domain.me.dto.request
 
 import com.linkup.domain.user.domain.enums.UserGender
 import java.time.LocalDate
 
-data class UserUpdateRequest(
+data class MeUpdateRequest(
     val nickname: String?,
     val linkupId: String?,
     val birthday: LocalDate?,

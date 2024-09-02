@@ -1,9 +1,7 @@
 package com.linkup.domain.user.service
 
-import com.linkup.domain.user.dto.request.UserUpdateRequest
-import com.linkup.domain.user.dto.response.UserResponse
+import com.linkup.domain.user.dto.response.GetUserResponse
 
 interface UserService {
-    fun getMe(): UserResponse
-    fun updateMe(request: UserUpdateRequest): UserResponse
+    fun getUser(linkupId: String?, phoneNumber: String?): GetUserResponse
 }

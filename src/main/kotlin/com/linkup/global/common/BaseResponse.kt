@@ -9,7 +9,7 @@ data class BaseResponse<T>(
     val success: Boolean
 ) {
     companion object {
-        fun of(data: Any, status: Int = 200, message: String = "success", success: Boolean = true) =
+        fun <T> of(data: T, status: Int = 200, message: String = "success", success: Boolean = true) =
             ResponseEntity.status(status).body(BaseResponse(data, status, message, success))
     }
 }

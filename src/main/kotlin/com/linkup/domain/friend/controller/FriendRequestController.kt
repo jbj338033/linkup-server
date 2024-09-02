@@ -16,10 +16,17 @@ class FriendRequestController(
     @GetMapping
     fun getFriendRequests() = BaseResponse.of(friendRequestService.getFriendRequests())
 
+    @Operation(summary = "내가 보낸 친구 요청 목록")
+    @GetMapping("/sent")
+    fun getSentFriendRequests() = BaseResponse.of(friendRequestService.getSentFriendRequests())
+
     @Operation(summary = "친구 요청")
-    @PostMapping("/{linkupId}")
-    fun sendFriendRequest(@PathVariable linkupId: String) =
-        BaseResponse.of(friendRequestService.sendFriendRequest(linkupId))
+    @PostMapping
+    fun sendFriendRequest(
+        @RequestParam(required = false) linkupId: String?,
+        @RequestParam(required = false) phoneNumber: String?
+    ) =
+        BaseResponse.of(friendRequestService.sendFriendRequest(linkupId, phoneNumber))
 
     @Operation(summary = "친구 요청 수락")
     @PostMapping("/{linkupId}/accept")

@@ -1,5 +1,6 @@
 package com.linkup.domain.chat.room.domain.entity
 
+import com.linkup.domain.chat.message.domain.entity.ChatMessage
 import com.linkup.global.common.BaseTimeEntity
 import jakarta.persistence.*
 import java.util.*
@@ -13,4 +14,10 @@ class ChatRoom(
 
     @Column(name = "name", nullable = false)
     val name: String,
+
+    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
+    val members: Set<ChatRoomMember> = mutableSetOf(),
+
+    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
+    val messages: Set<ChatMessage> = mutableSetOf()
 ) : BaseTimeEntity()

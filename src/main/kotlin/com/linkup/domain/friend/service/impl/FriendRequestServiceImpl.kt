@@ -25,14 +25,27 @@ class FriendRequestServiceImpl(
     override fun getFriendRequests(): List<UserResponse> {
         val user = securityHolder.user
 
-        return friendRequestRepository.findAllByRequestee(user).map { UserResponse(it.requester) }
+        return friendRequestRepository.findAllByRequestee(user).map { UserResponse.of(it.requester) }
+    }
+
+    @Transactional(readOnly = true)
+    override fun getSentFriendRequests(): List<UserResponse> {
+        val user = securityHolder.user
+
+        return friendRequestRepository.findAllByRequester(user).map { UserResponse.of(it.requestee) }
     }
 
     @Transactional
-    override fun sendFriendRequest(linkupId: String) {
+    override fun sendFriendRequest(linkupId: String?, phoneNumber: String?) {
         val requester = securityHolder.user
-        val requestee = userRepository.findByLinkupId(linkupId)
-            ?: throw CustomException(UserError.USER_NOT_FOUND)
+
+        val requestee = if (linkupId != null) {
+            userRepository.findByLinkupId(linkupId) ?: throw CustomException(UserError.USER_NOT_FOUND)
+        } else if (phoneNumber != null) {
+            userRepository.findByPhoneNumber(phoneNumber) ?: throw CustomException(UserError.USER_NOT_FOUND)
+        } else {
+            throw CustomException(UserError.USER_NOT_FOUND)
+        }
 
         if (requester == requestee) throw CustomException(FriendError.FRIEND_REQUEST_SELF)
 

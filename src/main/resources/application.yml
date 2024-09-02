@@ -6,7 +6,7 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
   data:
     redis:
       host: 'localhost'
@@ -27,6 +27,8 @@ spring:
     header: 'Authorization'
   servlet:
     multipart:
-      location: /tmp
-      max-file-size: 500MB
-      max-request-size: 500MB
+      location: '/tmp'
+      max-file-size: '500MB'
+      max-request-size: '500MB'
+  jackson:
+    time-zone: 'Asia/Seoul'

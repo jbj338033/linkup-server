@@ -1,10 +1,12 @@
 package com.linkup.domain.user.domain.entity
 
+import com.linkup.domain.friend.domain.entity.Friend
 import com.linkup.domain.user.domain.enums.UserGender
 import com.linkup.domain.user.domain.enums.UserRole
 import com.linkup.global.common.BaseTimeEntity
 import jakarta.persistence.*
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.*
 
 @Entity
@@ -19,6 +21,10 @@ class User(
 
     @Column(name = "linkup_id", nullable = false, unique = true)
     var linkupId: String,
+
+    // linkup id changed at
+    @Column(name = "linkup_id_updated_at", nullable = false)
+    var linkupIdUpdatedAt: LocalDateTime,
 
     @Column(name = "email", nullable = false, unique = true)
     val email: String,
@@ -44,5 +50,9 @@ class User(
 
     @Enumerated(EnumType.STRING)
     @Column(name = "gender", nullable = false)
-    var gender: UserGender
+    var gender: UserGender,
+
+    // friends
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    val friends: MutableSet<Friend> = mutableSetOf(),
 ) : BaseTimeEntity()

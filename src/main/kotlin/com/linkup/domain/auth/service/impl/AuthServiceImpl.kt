@@ -16,6 +16,7 @@ import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDateTime
 
 @Service
 class AuthServiceImpl(
@@ -45,6 +46,7 @@ class AuthServiceImpl(
         val user = User(
             nickname = request.nickname,
             linkupId = request.linkupId,
+            linkupIdUpdatedAt = LocalDateTime.now(),
             email = request.email,
             password = passwordEncoder.encode(request.password),
             birthday = request.birthday,

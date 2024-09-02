@@ -59,21 +59,20 @@ class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/signup", "/auth/reissue").anonymous()
                 .requestMatchers(HttpMethod.GET, "/auth/check").permitAll()
 
-                .requestMatchers(HttpMethod.GET, "/users/me").authenticated()
-                .requestMatchers(HttpMethod.PATCH, "/users/me").authenticated()
+                .requestMatchers(HttpMethod.GET, "/users").authenticated()
 
                 .requestMatchers(HttpMethod.POST, "/files/upload").permitAll()
 
                 .requestMatchers(HttpMethod.GET, "/friends").authenticated()
                 .requestMatchers(HttpMethod.DELETE, "/friends/{friendId}").authenticated()
 
-                .requestMatchers(HttpMethod.GET, "/friends/requests").authenticated()
+                .requestMatchers(HttpMethod.GET, "/friend-requests", "/friend-requests/sent").authenticated()
                 .requestMatchers(
                     HttpMethod.POST,
-                    "/friends/requests",
-                    "/friends/requests/accept",
-                    "/friends/requests/reject",
-                    "/friends/requests/cancel"
+                    "/friend-requests",
+                    "/friend-requests/accept",
+                    "/friend-requests/reject",
+                    "/friend-requests/cancel"
                 ).authenticated()
 
                 .requestMatchers(HttpMethod.GET, "/uploads/**").permitAll()

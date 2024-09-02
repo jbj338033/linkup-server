@@ -21,7 +21,7 @@ class FriendServiceImpl(
     override fun getFriends(): List<UserResponse> {
         val user = securityHolder.user
 
-        return friendRepository.findAllByUser(user).map { UserResponse(it.friend) }
+        return friendRepository.findAllByUser(user).map { UserResponse.of(it.friend) }
     }
 
     @Transactional

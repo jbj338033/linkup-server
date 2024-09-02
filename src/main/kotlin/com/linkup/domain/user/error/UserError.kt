@@ -10,5 +10,6 @@ enum class UserError(override val status: HttpStatus, override val message: Stri
     EMAIL_DUPLICATED(HttpStatus.BAD_REQUEST, "이미 사용중인 이메일입니다."),
     PHONE_NUMBER_DUPLICATED(HttpStatus.BAD_REQUEST, "이미 사용중인 전화번호입니다."),
     INVALID_BIRTHDAY(HttpStatus.BAD_REQUEST, "유효하지 않은 생년월일입니다."),
-    LINKUP_ID_DUPLICATED(HttpStatus.BAD_REQUEST, "이미 사용중인 링크업 아이디입니다.")
+    LINKUP_ID_DUPLICATED(HttpStatus.BAD_REQUEST, "이미 사용중인 링크업 아이디입니다."),
+    LINKUP_ID_UPDATED_AT(HttpStatus.BAD_REQUEST, "링크업 아이디는 30일에 한 번만 변경할 수 있습니다.")
 }

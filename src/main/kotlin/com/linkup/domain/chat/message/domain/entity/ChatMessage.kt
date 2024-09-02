@@ -12,8 +12,11 @@ class ChatMessage(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
 
-    @Column(name = "content", nullable = false)
-    val content: String,
+    @Column(name = "content")
+    val content: String? = null,
+
+    @OneToMany(mappedBy = "message", fetch = FetchType.LAZY)
+    val mentions: Set<ChatMessageMention> = mutableSetOf(),
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_room_id", nullable = false)
@@ -21,5 +24,5 @@ class ChatMessage(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender_id", nullable = false)
-    val sender: User
+    val sender: User,
 ) : BaseTimeEntity()
