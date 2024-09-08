@@ -16,6 +16,7 @@ import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Service
@@ -42,6 +43,10 @@ class AuthServiceImpl(
     override fun signup(request: SignUpRequest) {
         if (userRepository.existsByEmail(request.email)) throw CustomException(UserError.EMAIL_DUPLICATED)
         if (userRepository.existsByPhoneNumber(request.phoneNumber)) throw CustomException(UserError.PHONE_NUMBER_DUPLICATED)
+
+        val now = LocalDate.now()
+
+        if (!request.birthday.isBefore(now)) throw CustomException(UserError.INVALID_BIRTHDAY)
 
         val user = User(
             nickname = request.nickname,

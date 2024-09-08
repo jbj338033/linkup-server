@@ -14,10 +14,10 @@ import org.springframework.http.HttpHeaders
 class SwaggerConfig {
     @Bean
     fun api(): OpenAPI =
-        OpenAPI().info(Info().title("KakaoTalk").description("KakaoTalk API Documentation").version("v1.0"))
+        OpenAPI().info(Info().title("LinkUp").description("LinkUp API Documentation").version("v1.0"))
             .servers(
                 listOf(
-                    Server().apply { url = "https://eb1f-175-202-245-36.ngrok-free.app" },
+                    Server().apply { url = "https://ae10-221-168-22-204.ngrok-free.app" },
                     Server().apply { url = "http://localhost:8080" },
                 )
             )

@@ -17,6 +17,6 @@ class FriendController(
     fun getFriends() = BaseResponse.of(friendService.getFriends())
 
     @Operation(summary = "친구 삭제")
-    @DeleteMapping("/{friendId}")
-    fun deleteFriend(@PathVariable friendId: String) = BaseResponse.of(friendService.deleteFriend(friendId))
+    @DeleteMapping("/{linkupId}")
+    fun deleteFriend(@PathVariable linkupId: String) = BaseResponse.of(friendService.deleteFriend(linkupId))
 }

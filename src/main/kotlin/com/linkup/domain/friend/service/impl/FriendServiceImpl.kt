@@ -25,9 +25,9 @@ class FriendServiceImpl(
     }
 
     @Transactional
-    override fun deleteFriend(friendId: String) {
+    override fun deleteFriend(linkupId: String) {
         val user = securityHolder.user
-        val friend = userRepository.findByLinkupId(friendId)
+        val friend = userRepository.findByLinkupId(linkupId)
             ?: throw CustomException(UserError.USER_NOT_FOUND)
 
         val isFriend = friendRepository.existsByUserAndFriend(user, friend)

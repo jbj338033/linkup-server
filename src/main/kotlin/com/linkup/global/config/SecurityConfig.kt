@@ -75,7 +75,25 @@ class SecurityConfig {
                     "/friend-requests/cancel"
                 ).authenticated()
 
+                .requestMatchers(HttpMethod.GET, "/chat-rooms").authenticated()
+
+                .requestMatchers(HttpMethod.GET, "/chat-rooms/open").authenticated()
+                .requestMatchers(
+                    HttpMethod.POST,
+                    "/chat-rooms/open",
+                    "/chat-rooms/open/{chatRoomId}/join",
+                    "/chat-rooms/open/{chatRoomId}/leave"
+                ).authenticated()
+
+                .requestMatchers(HttpMethod.GET, "/chat-rooms/personal").authenticated()
+                .requestMatchers(HttpMethod.POST, "/chat-rooms/personal").authenticated()
+
+                .requestMatchers(HttpMethod.GET, "/chat-rooms/group").authenticated()
+                .requestMatchers(HttpMethod.POST, "/chat-rooms/group").authenticated()
+
                 .requestMatchers(HttpMethod.GET, "/uploads/**").permitAll()
+
+                .requestMatchers("/ws", "/pub/**", "/sub/**", "/topic", "/queue", "/exchange/**").permitAll()
                 .anyRequest().authenticated()
         }
 

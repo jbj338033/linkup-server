@@ -5,8 +5,8 @@ import com.linkup.global.common.BaseTimeEntity
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "chat_room_members")
-class ChatRoomMember(
+@Table(name = "chat_room_participants")
+class ChatRoomParticipant(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,

@@ -8,6 +8,7 @@ interface UserRepository : JpaRepository<User, UUID> {
     fun findByEmail(email: String): User?
     fun findByLinkupId(linkupId: String): User?
     fun findByPhoneNumber(phoneNumber: String): User?
+    fun findAllByLinkupIdIn(linkupIds: List<String>): List<User>
 
     fun existsByEmail(email: String): Boolean
     fun existsByLinkupId(linkupId: String): Boolean

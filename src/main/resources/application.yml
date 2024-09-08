@@ -32,3 +32,7 @@ spring:
       max-request-size: '500MB'
   jackson:
     time-zone: 'Asia/Seoul'
+logging:
+  level:
+    org.springframework.messaging.simp.stomp: DEBUG
+    org.springframework.web.socket: DEBUG
