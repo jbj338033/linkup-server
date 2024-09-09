@@ -31,34 +31,43 @@ class JwtProvider(
         Jwts.SIG.HS512.key().build().algorithm
     )
 
-    fun generateToken(user: User): JwtResponse {
+    fun generateToken(email: String): JwtResponse {
+        return JwtResponse(
+            accessToken = generateAccessToken(email),
+            refreshToken = generateRefreshToken(email)
+        )
+    }
+
+    private fun generateAccessToken(email: String): String {
         val now = Date()
 
-        val accessToken = Jwts.builder()
+        return Jwts.builder()
             .header()
             .type(JwtType.ACCESS.name)
             .and()
-            .subject(user.email)
+            .subject(email)
             .issuedAt(now)
             .issuer(jwtProperties.issuer)
             .expiration(Date(now.time + jwtProperties.accessTokenExpiration))
             .signWith(key)
             .compact()
+    }
 
-        val refreshToken = Jwts.builder()
+    private fun generateRefreshToken(email: String): String {
+        val now = Date()
+
+        return Jwts.builder()
             .header()
             .type(JwtType.REFRESH.name)
             .and()
-            .subject(user.email)
+            .subject(email)
             .issuedAt(now)
             .issuer(jwtProperties.issuer)
             .expiration(Date(now.time + jwtProperties.refreshTokenExpiration))
             .signWith(key)
-            .compact()
-
-        refreshTokenRepository.save(RefreshToken(user.email, refreshToken))
-
-        return JwtResponse(accessToken, refreshToken)
+            .compact().also {
+                refreshTokenRepository.save(RefreshToken(email, it))
+            }
     }
 
     fun getEmail(token: String): String = getClaims(token).subject
