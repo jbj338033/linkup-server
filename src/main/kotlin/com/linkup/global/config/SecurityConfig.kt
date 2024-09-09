@@ -93,8 +93,10 @@ class SecurityConfig {
 
                 .requestMatchers(HttpMethod.GET, "/uploads/**").permitAll()
 
-                .requestMatchers("/ws", "/pub/**", "/sub/**", "/topic", "/queue", "/exchange/**").permitAll()
-                .anyRequest().authenticated()
+                .requestMatchers(HttpMethod.GET, "/chat-messages/general").permitAll()
+
+                .anyRequest().permitAll()
+//                .anyRequest().authenticated()
         }
 
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)

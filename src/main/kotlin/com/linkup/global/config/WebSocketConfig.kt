@@ -21,7 +21,7 @@ class WebSocketConfig(
         registry.setApplicationDestinationPrefixes("/pub")
         registry.enableStompBrokerRelay("/queue", "/topic", "/exchange", "/amq/queue")
             .setRelayHost(rabbitProperties.host)
-            .setRelayPort(rabbitProperties.port)
+            .setRelayPort(61613)
             .setClientLogin(rabbitProperties.username)
             .setClientPasscode(rabbitProperties.password)
             .setSystemLogin(rabbitProperties.username)
@@ -31,7 +31,7 @@ class WebSocketConfig(
 
     override fun registerStompEndpoints(registry: StompEndpointRegistry) {
         registry.addEndpoint("/ws")
-            .setAllowedOriginPatterns("*")
+            .setAllowedOrigins("*")
     }
 
     override fun configureClientInboundChannel(registration: ChannelRegistration) {

@@ -2,6 +2,7 @@ package com.linkup.domain.chat.room.service.impl
 
 import com.linkup.domain.chat.room.domain.entity.ChatRoom
 import com.linkup.domain.chat.room.domain.entity.ChatRoomParticipant
+import com.linkup.domain.chat.room.domain.entity.ChatRoomSubscription
 import com.linkup.domain.chat.room.domain.enums.ChatRoomType
 import com.linkup.domain.chat.room.dto.request.CreateGroupChatRoomRequest
 import com.linkup.domain.chat.room.dto.request.CreateOpenChatRoomRequest
@@ -9,6 +10,7 @@ import com.linkup.domain.chat.room.dto.request.CreatePersonalChatRoomRequest
 import com.linkup.domain.chat.room.dto.response.ChatRoomResponse
 import com.linkup.domain.chat.room.error.ChatRoomError
 import com.linkup.domain.chat.room.repository.ChatRoomRepository
+import com.linkup.domain.chat.room.repository.ChatRoomSubscriptionRepository
 import com.linkup.domain.chat.room.service.ChatRoomService
 import com.linkup.domain.user.error.UserError
 import com.linkup.domain.user.repository.UserRepository
@@ -22,7 +24,8 @@ import java.util.*
 class ChatRoomServiceImpl(
     private val securityHolder: SecurityHolder,
     private val userRepository: UserRepository,
-    private val chatRoomRepository: ChatRoomRepository
+    private val chatRoomRepository: ChatRoomRepository,
+    private val chatRoomSubscriptionRepository: ChatRoomSubscriptionRepository
 ) : ChatRoomService {
     @Transactional(readOnly = true)
     override fun getChatRooms(): List<ChatRoomResponse> {
@@ -159,5 +162,13 @@ class ChatRoomServiceImpl(
         room.participants.removeIf { it.user == me }
 
         return ChatRoomResponse.of(room)
+    }
+
+    override fun subscribeChatRoom(chatRoomId: UUID) {
+        chatRoomSubscriptionRepository.save(ChatRoomSubscription(securityHolder.user.linkupId, chatRoomId))
+    }
+
+    override fun unsubscribeChatRoom() {
+        chatRoomSubscriptionRepository.deleteById(securityHolder.user.linkupId)
     }
 }

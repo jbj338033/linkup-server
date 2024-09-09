@@ -1,5 +1,7 @@
 package com.linkup.global.security.jwt.provider
 
+import com.linkup.domain.auth.domain.entity.RefreshToken
+import com.linkup.domain.auth.repository.RefreshTokenRepository
 import com.linkup.domain.user.domain.entity.User
 import com.linkup.domain.user.error.UserError
 import com.linkup.domain.user.repository.UserRepository
@@ -11,20 +13,18 @@ import com.linkup.global.security.jwt.enums.JwtType
 import com.linkup.global.security.jwt.error.JwtError
 import io.jsonwebtoken.*
 import jakarta.servlet.http.HttpServletRequest
-import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Component
 import java.nio.charset.StandardCharsets
 import java.util.*
-import java.util.concurrent.TimeUnit
 import javax.crypto.spec.SecretKeySpec
 
 @Component
 class JwtProvider(
     private val jwtProperties: JwtProperties,
-    private val redisTemplate: RedisTemplate<String, String>,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val refreshTokenRepository: RefreshTokenRepository
 ) {
     private val key = SecretKeySpec(
         jwtProperties.secretKey.toByteArray(StandardCharsets.UTF_8),
@@ -56,17 +56,12 @@ class JwtProvider(
             .signWith(key)
             .compact()
 
-        redisTemplate.opsForValue().set(
-            "refreshToken:${user.email}",
-            refreshToken,
-            jwtProperties.refreshTokenExpiration,
-            TimeUnit.MILLISECONDS
-        )
+        refreshTokenRepository.save(RefreshToken(user.email, refreshToken))
 
         return JwtResponse(accessToken, refreshToken)
     }
 
-    fun getEmail(token: String) = getClaims(token).subject
+    fun getEmail(token: String): String = getClaims(token).subject
 
     fun getAuthentication(token: String): Authentication {
         val claims = getClaims(token)

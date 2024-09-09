@@ -8,6 +8,7 @@ import org.springframework.amqp.rabbit.annotation.EnableRabbit
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory
 import org.springframework.amqp.rabbit.core.RabbitAdmin
 import org.springframework.amqp.rabbit.core.RabbitTemplate
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter
 import org.springframework.boot.autoconfigure.amqp.RabbitProperties
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.ApplicationListener
@@ -16,7 +17,7 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 @EnableRabbit
-class RabbitConfig(private val rabbitProperties: RabbitProperties): ApplicationListener<ApplicationReadyEvent> {
+class RabbitConfig(private val rabbitProperties: RabbitProperties) : ApplicationListener<ApplicationReadyEvent> {
     companion object {
         private const val QUEUE_NAME = "linkup.queue"
         private const val EXCHANGE_NAME = "linkup.exchange"
@@ -34,8 +35,7 @@ class RabbitConfig(private val rabbitProperties: RabbitProperties): ApplicationL
 
     @Bean
     fun rabbitTemplate() = RabbitTemplate(rabbitConnectionFactory()).apply {
-        setExchange(EXCHANGE_NAME)
-        routingKey = ROUTING_KEY
+        messageConverter = Jackson2JsonMessageConverter()
     }
 
     @Bean

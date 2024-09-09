@@ -19,4 +19,8 @@ interface ChatRoomService {
     fun createOpenChatRoom(request: CreateOpenChatRoomRequest): ChatRoomResponse
     fun joinOpenChatRoom(chatRoomId: UUID): ChatRoomResponse
     fun leaveOpenChatRoom(chatRoomId: UUID): ChatRoomResponse
+
+
+    fun subscribeChatRoom(chatRoomId: UUID)
+    fun unsubscribeChatRoom()
 }

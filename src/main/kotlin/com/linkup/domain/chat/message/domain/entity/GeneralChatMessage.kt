@@ -17,4 +17,4 @@ class GeneralChatMessage(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender_id", nullable = false)
     val sender: User,
-): BaseTimeEntity()
+) : BaseTimeEntity()

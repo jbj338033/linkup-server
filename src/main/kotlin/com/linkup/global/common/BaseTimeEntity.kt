@@ -19,6 +19,6 @@ abstract class BaseTimeEntity(
     @Column(name = "updated_at", nullable = false)
     private var _updatedAt: LocalDateTime? = null
 ) {
-    val createdAt get() = _createdAt
-    val updatedAt get() = _updatedAt
+    val createdAt get() = _createdAt!!
+    val updatedAt get() = _updatedAt!!
 }

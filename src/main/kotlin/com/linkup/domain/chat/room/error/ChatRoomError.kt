@@ -8,4 +8,5 @@ enum class ChatRoomError(override val status: HttpStatus, override val message: 
     CHAT_ROOM_NOT_OPEN(HttpStatus.BAD_REQUEST, "공개 채팅방이 아닙니다."),
     CHAT_ROOM_ALREADY_JOINED(HttpStatus.BAD_REQUEST, "이미 참여한 채팅방입니다."),
     CHAT_ROOM_NOT_JOINED(HttpStatus.BAD_REQUEST, "참여하지 않은 채팅방입니다."),
+    NOT_PARTICIPANT(HttpStatus.BAD_REQUEST, "참여자가 아닙니다."),
 }

@@ -2,6 +2,7 @@ package com.linkup.domain.chat.message.dto.response
 
 import com.linkup.domain.chat.message.domain.entity.GeneralChatMessage
 import com.linkup.domain.user.domain.entity.User
+import java.time.LocalDateTime
 
 data class GeneralChatMessageSenderResponse(
     val nickname: String,
@@ -18,13 +19,19 @@ data class GeneralChatMessageSenderResponse(
 }
 
 data class GeneralChatMessageResponse(
+    val id: Long,
     val content: String,
-    val sender: GeneralChatMessageSenderResponse
+    val sender: GeneralChatMessageSenderResponse,
+    val createdAt: LocalDateTime,
+    val updatedAt: LocalDateTime
 ) {
     companion object {
         fun of(message: GeneralChatMessage) = GeneralChatMessageResponse(
+            id = message.id!!,
             content = message.content,
-            sender = GeneralChatMessageSenderResponse.of(message.sender)
+            sender = GeneralChatMessageSenderResponse.of(message.sender),
+            createdAt = message.createdAt,
+            updatedAt = message.updatedAt
         )
     }
 }

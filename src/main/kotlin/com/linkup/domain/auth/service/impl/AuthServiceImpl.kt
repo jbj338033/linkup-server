@@ -3,6 +3,7 @@ package com.linkup.domain.auth.service.impl
 import com.linkup.domain.auth.dto.request.LoginRequest
 import com.linkup.domain.auth.dto.request.ReissueRequest
 import com.linkup.domain.auth.dto.request.SignUpRequest
+import com.linkup.domain.auth.repository.RefreshTokenRepository
 import com.linkup.domain.auth.service.AuthService
 import com.linkup.domain.user.domain.entity.User
 import com.linkup.domain.user.error.UserError
@@ -12,7 +13,7 @@ import com.linkup.global.security.jwt.dto.JwtResponse
 import com.linkup.global.security.jwt.enums.JwtType
 import com.linkup.global.security.jwt.error.JwtError
 import com.linkup.global.security.jwt.provider.JwtProvider
-import org.springframework.data.redis.core.RedisTemplate
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -24,7 +25,7 @@ class AuthServiceImpl(
     private val passwordEncoder: PasswordEncoder,
     private val userRepository: UserRepository,
     private val jwtProvider: JwtProvider,
-    private val redisTemplate: RedisTemplate<String, String>
+    private val refreshTokenRepository: RefreshTokenRepository
 ) : AuthService {
     @Transactional
     override fun login(request: LoginRequest): JwtResponse {
@@ -68,11 +69,10 @@ class AuthServiceImpl(
 
         val email = jwtProvider.getEmail(request.refreshToken)
         val user = userRepository.findByEmail(email) ?: throw CustomException(UserError.USER_NOT_FOUND)
-        val refreshToken = redisTemplate.opsForValue().get("refreshToken:${user.email}") ?: throw CustomException(
-            JwtError.INVALID_TOKEN
-        )
+        val refreshToken =
+            refreshTokenRepository.findByIdOrNull(user.email) ?: throw CustomException(JwtError.INVALID_TOKEN)
 
-        if (refreshToken != request.refreshToken) throw CustomException(JwtError.INVALID_TOKEN)
+        if (refreshToken.refreshToken != request.refreshToken) throw CustomException(JwtError.INVALID_TOKEN)
 
         return jwtProvider.generateToken(user)
     }

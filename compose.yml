@@ -20,6 +20,7 @@ services:
     ports:
       - '5672:5672'
       - '15672:15672'
+      - '61613:61613'
     volumes:
       - './.compose/rabbitmq:/var/lib/rabbitmq'
   redis:
