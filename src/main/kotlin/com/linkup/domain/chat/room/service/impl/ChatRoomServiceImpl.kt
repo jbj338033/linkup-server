@@ -150,7 +150,6 @@ class ChatRoomServiceImpl(
         val me = securityHolder.user
         val room =
             chatRoomRepository.findById(chatRoomId).orElseThrow { CustomException(ChatRoomError.CHAT_ROOM_NOT_FOUND) }
-
         if (room.type != ChatRoomType.OPEN) {
             throw CustomException(ChatRoomError.CHAT_ROOM_NOT_OPEN)
         }
@@ -163,6 +162,7 @@ class ChatRoomServiceImpl(
 
         return ChatRoomResponse.of(room)
     }
+
 
     override fun subscribeChatRoom(chatRoomId: UUID) {
         chatRoomSubscriptionRepository.save(ChatRoomSubscription(securityHolder.user.linkupId, chatRoomId))
