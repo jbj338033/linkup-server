@@ -1,14 +1,10 @@
 package com.linkup.global.websocket.handler
 
-import com.linkup.domain.chat.room.error.ChatRoomError
 import com.linkup.domain.chat.room.repository.ChatRoomRepository
 import com.linkup.domain.chat.room.service.ChatRoomService
-import com.linkup.domain.user.error.UserError
 import com.linkup.domain.user.repository.UserRepository
-import com.linkup.global.error.CustomException
 import com.linkup.global.security.holder.SecurityHolder
 import com.linkup.global.security.jwt.provider.JwtProvider
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.messaging.Message
 import org.springframework.messaging.MessageChannel
 import org.springframework.messaging.simp.SimpAttributesContextHolder
@@ -43,20 +39,12 @@ class StompHandler(
             SimpMessageType.MESSAGE,
             SimpMessageType.CONNECT_ACK,
             SimpMessageType.SUBSCRIBE -> {
-                val email = securityHolder.email
                 val destination = accessor.destination ?: return null
 
                 if (destination.startsWith("/exchange/linkup.exchange/room.")) {
                     val roomId = UUID.fromString(destination.removePrefix("/exchange/linkup.exchange/room."))
-                    val user = userRepository.findByEmail(email) ?: throw CustomException(UserError.USER_NOT_FOUND)
-                    val room = chatRoomRepository.findByIdOrNull(roomId)
-                        ?: throw CustomException(ChatRoomError.CHAT_ROOM_NOT_FOUND)
 
-                    if (user !in room.participants.map { it.user }) {
-                        throw CustomException(ChatRoomError.NOT_PARTICIPANT)
-                    }
-
-                    chatRoomService.subscribeChatRoom(room.id!!)
+                    chatRoomService.subscribeChatRoom(roomId)
                 }
 
                 return MessageBuilder.createMessage(message.payload, accessor.messageHeaders)

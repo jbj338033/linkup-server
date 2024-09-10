@@ -16,6 +16,7 @@ import com.linkup.domain.user.error.UserError
 import com.linkup.domain.user.repository.UserRepository
 import com.linkup.global.error.CustomException
 import com.linkup.global.security.holder.SecurityHolder
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -164,10 +165,19 @@ class ChatRoomServiceImpl(
     }
 
 
+    @Transactional
     override fun subscribeChatRoom(chatRoomId: UUID) {
+        val room = chatRoomRepository.findByIdOrNull(chatRoomId) ?: throw CustomException(ChatRoomError.CHAT_ROOM_NOT_FOUND)
+        val user = securityHolder.user
+
+        if (user !in room.participants.map { it.user }) {
+            throw CustomException(ChatRoomError.NOT_PARTICIPANT)
+        }
+
         chatRoomSubscriptionRepository.save(ChatRoomSubscription(securityHolder.user.linkupId, chatRoomId))
     }
 
+    @Transactional
     override fun unsubscribeChatRoom() {
         chatRoomSubscriptionRepository.deleteById(securityHolder.user.linkupId)
     }

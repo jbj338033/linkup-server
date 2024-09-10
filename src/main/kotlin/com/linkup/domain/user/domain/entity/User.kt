@@ -56,3 +56,24 @@ class User(
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     val friends: MutableSet<Friend> = mutableSetOf(),
 ) : BaseTimeEntity()
+
+@JvmInline
+value class UserEmail(val value: String) {
+    init {
+        require(value.length in 5..50) { "email length must be between 5 and 50" }
+    }
+}
+
+@JvmInline
+value class UserPhoneNumber(val value: String) {
+    init {
+        require(value.length in 10..15) { "phone number length must be between 10 and 15" }
+    }
+}
+
+@JvmInline
+value class UserLinkupId(val value: String) {
+    init {
+        require(value.length in 4..20) { "linkup id length must be between 4 and 20" }
+    }
+}

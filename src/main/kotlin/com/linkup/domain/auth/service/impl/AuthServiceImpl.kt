@@ -37,7 +37,7 @@ class AuthServiceImpl(
             )
         ) throw CustomException(UserError.PASSWORD_NOT_MATCH)
 
-        return jwtProvider.generateToken(user)
+        return jwtProvider.generateToken(user.email)
     }
 
     @Transactional
@@ -74,7 +74,7 @@ class AuthServiceImpl(
 
         if (refreshToken.refreshToken != request.refreshToken) throw CustomException(JwtError.INVALID_TOKEN)
 
-        return jwtProvider.generateToken(user)
+        return jwtProvider.generateToken(user.email)
     }
 
     @Transactional(readOnly = true)

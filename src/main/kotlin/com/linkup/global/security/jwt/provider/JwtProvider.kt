@@ -2,7 +2,6 @@ package com.linkup.global.security.jwt.provider
 
 import com.linkup.domain.auth.domain.entity.RefreshToken
 import com.linkup.domain.auth.repository.RefreshTokenRepository
-import com.linkup.domain.user.domain.entity.User
 import com.linkup.domain.user.error.UserError
 import com.linkup.domain.user.repository.UserRepository
 import com.linkup.global.error.CustomException
