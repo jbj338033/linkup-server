@@ -41,3 +41,5 @@ out/
 
 compose.yml
 .compose/
+
+push.sh

@@ -29,7 +29,10 @@ class AuthServiceImpl(
 ) : AuthService {
     @Transactional
     override fun login(request: LoginRequest): JwtResponse {
-        val user = userRepository.findByEmail(request.email) ?: throw CustomException(UserError.USER_NOT_FOUND)
+        val user = userRepository.findByEmail(request.email) ?: throw CustomException(
+            UserError.USER_NOT_FOUND_BY_EMAIL,
+            request.email
+        )
 
         if (!passwordEncoder.matches(
                 request.password,
@@ -68,7 +71,7 @@ class AuthServiceImpl(
         if (jwtProvider.getType(request.refreshToken) != JwtType.REFRESH) throw CustomException(JwtError.INVALID_TOKEN_TYPE)
 
         val email = jwtProvider.getEmail(request.refreshToken)
-        val user = userRepository.findByEmail(email) ?: throw CustomException(UserError.USER_NOT_FOUND)
+        val user = userRepository.findByEmail(email) ?: throw CustomException(UserError.USER_NOT_FOUND_BY_EMAIL, email)
         val refreshToken =
             refreshTokenRepository.findByIdOrNull(user.email) ?: throw CustomException(JwtError.INVALID_TOKEN)
 

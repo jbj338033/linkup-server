@@ -8,4 +8,5 @@ import java.util.*
 
 interface ChatRoomRepository : JpaRepository<ChatRoom, UUID> {
     fun findAllByParticipantsUserAndType(user: User, type: ChatRoomType): List<ChatRoom>
+    fun findByParticipantsUserAndParticipantsUserAndType(user1: User, user2: User, type: ChatRoomType): ChatRoom?
 }

@@ -8,8 +8,10 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.messaging.handler.annotation.MessageMapping
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.util.*
 
 @Tag(name = "채팅 메시지", description = "Chat Message")
 @RestController
@@ -29,4 +31,7 @@ class ChatMessageController(
 
     @GetMapping("/general")
     fun getGeneralMessages() = BaseResponse.of(chatMessageService.getGeneralMessages())
+
+    @GetMapping("/{roomId}")
+    fun getMessages(@PathVariable roomId: UUID) = BaseResponse.of(chatMessageService.getMessages(roomId))
 }

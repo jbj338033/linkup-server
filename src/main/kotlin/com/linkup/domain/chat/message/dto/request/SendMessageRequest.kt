@@ -5,4 +5,5 @@ import java.util.*
 data class SendMessageRequest(
     val roomId: UUID,
     val content: String,
+    val mentions: List<String>,
 )

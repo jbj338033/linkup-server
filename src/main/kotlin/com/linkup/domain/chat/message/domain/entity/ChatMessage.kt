@@ -16,7 +16,7 @@ class ChatMessage(
     val content: String? = null,
 
     @OneToMany(mappedBy = "message", fetch = FetchType.LAZY)
-    val mentions: Set<ChatMessageMention> = mutableSetOf(),
+    var mentions: Set<ChatMessageMention> = mutableSetOf(),
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_room_id", nullable = false)
@@ -24,5 +24,5 @@ class ChatMessage(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender_id", nullable = false)
-    val sender: User,
+    val sender: User
 ) : BaseTimeEntity()

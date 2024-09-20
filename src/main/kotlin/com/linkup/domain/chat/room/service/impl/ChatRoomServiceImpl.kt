@@ -60,10 +60,39 @@ class ChatRoomServiceImpl(
             .map { ChatRoomResponse.of(it) }
     }
 
+    @Transactional(readOnly = true)
+    override fun getPersonalChatRoom(linkupId: String): ChatRoomResponse {
+        val me = securityHolder.user
+
+        val other = userRepository.findByLinkupId(linkupId) ?: throw CustomException(
+            UserError.USER_NOT_FOUND_BY_LINKUP_ID,
+            linkupId
+        )
+
+        val room = chatRoomRepository.findAllByParticipantsUserAndType(me, ChatRoomType.PERSONAL)
+            .find { it.participants.any { it.user == other } }
+            ?: throw CustomException(ChatRoomError.CHAT_ROOM_NOT_FOUND)
+
+        room.name = room.participants.find { it.user != me }?.user?.nickname ?: ""
+        room.profileImage = room.participants.find { it.user != me }?.user?.profileImage ?: ""
+
+        return ChatRoomResponse.of(room)
+    }
+
     @Transactional
     override fun createPersonalChatRoom(request: CreatePersonalChatRoomRequest): ChatRoomResponse {
         val me = securityHolder.user
-        val other = userRepository.findByLinkupId(request.linkupId) ?: throw CustomException(UserError.USER_NOT_FOUND)
+        val other = userRepository.findByLinkupId(request.linkupId)
+            ?: throw CustomException(UserError.USER_NOT_FOUND_BY_LINKUP_ID, request.linkupId)
+
+        if (me == other)
+            throw CustomException(ChatRoomError.CANNOT_CREATE_PERSONAL_CHAT_ROOM_WITH_MYSELF)
+
+        val existingRoom = chatRoomRepository.findAllByParticipantsUserAndType(me, ChatRoomType.PERSONAL)
+            .find { it.participants.any { it.user == other } }
+
+        if (existingRoom != null)
+            return ChatRoomResponse.of(existingRoom)
 
         var room = ChatRoom(
             name = "",
@@ -167,7 +196,8 @@ class ChatRoomServiceImpl(
 
     @Transactional
     override fun subscribeChatRoom(chatRoomId: UUID) {
-        val room = chatRoomRepository.findByIdOrNull(chatRoomId) ?: throw CustomException(ChatRoomError.CHAT_ROOM_NOT_FOUND)
+        val room =
+            chatRoomRepository.findByIdOrNull(chatRoomId) ?: throw CustomException(ChatRoomError.CHAT_ROOM_NOT_FOUND)
         val user = securityHolder.user
 
         if (user !in room.participants.map { it.user }) {
@@ -175,6 +205,11 @@ class ChatRoomServiceImpl(
         }
 
         chatRoomSubscriptionRepository.save(ChatRoomSubscription(securityHolder.user.linkupId, chatRoomId))
+    }
+
+    @Transactional
+    override fun subscribeGeneralChatRoom() {
+        chatRoomSubscriptionRepository.save(ChatRoomSubscription(securityHolder.user.linkupId, null, general = true))
     }
 
     @Transactional

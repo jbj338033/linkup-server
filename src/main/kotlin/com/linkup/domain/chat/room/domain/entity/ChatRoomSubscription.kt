@@ -11,5 +11,8 @@ class ChatRoomSubscription(
     val linkupId: String,
 
     @Indexed
-    val chatRoomId: UUID,
+    val chatRoomId: UUID? = null,
+
+    @Indexed
+    val general: Boolean = false
 )

@@ -28,7 +28,7 @@ class FriendServiceImpl(
     override fun deleteFriend(linkupId: String) {
         val user = securityHolder.user
         val friend = userRepository.findByLinkupId(linkupId)
-            ?: throw CustomException(UserError.USER_NOT_FOUND)
+            ?: throw CustomException(UserError.USER_NOT_FOUND_BY_LINKUP_ID, linkupId)
 
         val isFriend = friendRepository.existsByUserAndFriend(user, friend)
 

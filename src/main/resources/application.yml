@@ -1,38 +1,34 @@
 spring:
   datasource:
-    url: 'jdbc:postgresql://localhost:5432/kakaotalk'
-    username: 'kakaotalk'
-    password: 'pqowieur!!'
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: ${JPA_HIBERNATE_DDL_AUTO}
   data:
     redis:
-      host: 'localhost'
-      port: 6379
-      password: 'pqowieur!!'
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      password: ${REDIS_PASSWORD}
   rabbitmq:
-    host: 'localhost'
-    port: 5672
-    username: 'kakaotalk'
-    password: 'pqowieur!!'
+    host: ${RABBITMQ_HOST}
+    port: ${RABBITMQ_PORT}
+    username: ${RABBITMQ_USERNAME}
+    password: ${RABBITMQ_PASSWORD}
     virtual-host: '/'
   jwt:
-    secret-key: 'Oqjwasdf013j41idfnalksnf123awofdajisflkjnj3145uo13hrjlena123iuiajkfdhjkashdfu1i3iojkhasdbfhuhu1oh3ujhfjdahjd'
-    access-token-expiration: 360000
-    refresh-token-expiration: 8640000
-    issuer: 'kakaotalk'
-    prefix: 'Bearer '
-    header: 'Authorization'
+    secret-key: ${JWT_SECRET_KEY}
+    access-token-expiration: ${JWT_ACCESS_TOKEN_EXPIRATION}
+    refresh-token-expiration: ${JWT_REFRESH_TOKEN_EXPIRATION}
+    issuer: ${JWT_ISSUER}
+    prefix: ${JWT_PREFIX}
+    header: ${JWT_HEADER}
   servlet:
     multipart:
-      location: '/tmp'
-      max-file-size: '500MB'
-      max-request-size: '500MB'
+      location: ${MULTIPART_LOCATION}
+      max-file-size: ${MULTIPART_MAX_FILE_SIZE}
+      max-request-size: ${MULTIPART_MAX_REQUEST_SIZE}
   jackson:
-    time-zone: 'Asia/Seoul'
-logging:
-  level:
-    org.springframework.messaging.simp.stomp: DEBUG
-    org.springframework.web.socket: DEBUG
+    time-zone: ${JACKSON_TIME_ZONE}

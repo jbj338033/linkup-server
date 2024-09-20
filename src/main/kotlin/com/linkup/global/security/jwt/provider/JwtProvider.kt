@@ -73,7 +73,10 @@ class JwtProvider(
 
     fun getAuthentication(token: String): Authentication {
         val claims = getClaims(token)
-        val user = userRepository.findByEmail(claims.subject) ?: throw CustomException(UserError.USER_NOT_FOUND)
+        val user = userRepository.findByEmail(claims.subject) ?: throw CustomException(
+            UserError.USER_NOT_FOUND_BY_EMAIL,
+            claims.subject
+        )
         val details = CustomUserDetails(user)
 
         return UsernamePasswordAuthenticationToken(details, null, details.authorities)

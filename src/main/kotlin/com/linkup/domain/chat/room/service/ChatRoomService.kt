@@ -10,6 +10,7 @@ interface ChatRoomService {
     fun getChatRooms(): List<ChatRoomResponse>
 
     fun getPersonalChatRooms(): List<ChatRoomResponse>
+    fun getPersonalChatRoom(linkupId: String): ChatRoomResponse
     fun createPersonalChatRoom(request: CreatePersonalChatRoomRequest): ChatRoomResponse
 
     fun getGroupChatRooms(): List<ChatRoomResponse>
@@ -21,5 +22,6 @@ interface ChatRoomService {
     fun leaveOpenChatRoom(chatRoomId: UUID): ChatRoomResponse
 
     fun subscribeChatRoom(chatRoomId: UUID)
+    fun subscribeGeneralChatRoom()
     fun unsubscribeChatRoom()
 }

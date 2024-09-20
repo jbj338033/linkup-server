@@ -21,6 +21,10 @@ class ChatRoomController(
     @GetMapping("/personal")
     fun getPersonalChatRooms() = BaseResponse.of(chatRoomService.getPersonalChatRooms())
 
+    @GetMapping("/personal/{linkupId}")
+    fun getPersonalChatRoom(@PathVariable linkupId: String) =
+        BaseResponse.of(chatRoomService.getPersonalChatRoom(linkupId))
+
     @PostMapping("/personal")
     fun createPersonalChatRoom(@RequestBody request: CreatePersonalChatRoomRequest) =
         BaseResponse.of(chatRoomService.createPersonalChatRoom(request))

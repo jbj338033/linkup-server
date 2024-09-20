@@ -40,11 +40,15 @@ class FriendRequestServiceImpl(
         val requester = securityHolder.user
 
         val requestee = if (linkupId != null) {
-            userRepository.findByLinkupId(linkupId) ?: throw CustomException(UserError.USER_NOT_FOUND)
+            userRepository.findByLinkupId(linkupId) ?: throw CustomException(
+                UserError.USER_NOT_FOUND_BY_LINKUP_ID,
+                linkupId
+            )
         } else if (phoneNumber != null) {
-            userRepository.findByPhoneNumber(phoneNumber) ?: throw CustomException(UserError.USER_NOT_FOUND)
+            userRepository.findByPhoneNumber(phoneNumber)
+                ?: throw CustomException(UserError.USER_NOT_FOUND_BY_PHONE_NUMBER, phoneNumber)
         } else {
-            throw CustomException(UserError.USER_NOT_FOUND)
+            throw CustomException(UserError.LINKUP_ID_OR_PHONE_NUMBER_IS_NULL)
         }
 
         if (requester == requestee) throw CustomException(FriendError.FRIEND_REQUEST_SELF)
@@ -74,7 +78,7 @@ class FriendRequestServiceImpl(
     @Transactional
     override fun acceptFriendRequest(linkupId: String) {
         val requester = userRepository.findByLinkupId(linkupId)
-            ?: throw CustomException(UserError.USER_NOT_FOUND)
+            ?: throw CustomException(UserError.USER_NOT_FOUND_BY_LINKUP_ID, linkupId)
         val requestee = securityHolder.user
 
         val isRequested = friendRequestRepository.existsByRequesterAndRequestee(requester, requestee)
@@ -90,7 +94,7 @@ class FriendRequestServiceImpl(
     @Transactional
     override fun rejectFriendRequest(linkupId: String) {
         val requester = userRepository.findByLinkupId(linkupId)
-            ?: throw CustomException(UserError.USER_NOT_FOUND)
+            ?: throw CustomException(UserError.USER_NOT_FOUND_BY_LINKUP_ID, linkupId)
         val requestee = securityHolder.user
 
         val isRequested = friendRequestRepository.existsByRequesterAndRequestee(requester, requestee)
@@ -104,7 +108,7 @@ class FriendRequestServiceImpl(
     override fun cancelFriendRequest(linkupId: String) {
         val requester = securityHolder.user
         val requestee = userRepository.findByLinkupId(linkupId)
-            ?: throw CustomException(UserError.USER_NOT_FOUND)
+            ?: throw CustomException(UserError.USER_NOT_FOUND_BY_LINKUP_ID, linkupId)
 
         val isRequested = friendRequestRepository.existsByRequesterAndRequestee(requester, requestee)
 

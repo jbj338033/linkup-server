@@ -15,9 +15,17 @@ class SecurityHolderImpl(
     override val email: String
         get() = if (isWebSocket) SimpAttributesContextHolder.currentAttributes()
             .getAttribute("email") as String else SecurityContextHolder.getContext().authentication.name
+
     override val user: User
-        get() = userRepository.findByEmail(email) ?: throw CustomException(UserError.USER_NOT_FOUND)
+        get() = userRepository.findByEmail(email) ?: throw CustomException(UserError.USER_NOT_FOUND_BY_EMAIL, email)
 
     private val isWebSocket: Boolean
-        get() = SimpAttributesContextHolder.currentAttributes().getAttribute("email") != null
+        get() {
+            try {
+                SimpAttributesContextHolder.currentAttributes()
+                return true
+            } catch (e: IllegalStateException) {
+                return false
+            }
+        }
 }

@@ -22,11 +22,15 @@ class UserServiceImpl(
     @Transactional(readOnly = true)
     override fun getUser(linkupId: String?, phoneNumber: String?): GetUserResponse {
         val user = if (linkupId != null) {
-            userRepository.findByLinkupId(linkupId) ?: throw CustomException(UserError.USER_NOT_FOUND)
+            userRepository.findByLinkupId(linkupId) ?: throw CustomException(
+                UserError.USER_NOT_FOUND_BY_LINKUP_ID,
+                linkupId
+            )
         } else if (phoneNumber != null) {
-            userRepository.findByPhoneNumber(phoneNumber) ?: throw CustomException(UserError.USER_NOT_FOUND)
+            userRepository.findByPhoneNumber(phoneNumber)
+                ?: throw CustomException(UserError.USER_NOT_FOUND_BY_PHONE_NUMBER, phoneNumber)
         } else {
-            throw CustomException(UserError.USER_NOT_FOUND)
+            throw CustomException(UserError.LINKUP_ID_OR_PHONE_NUMBER_IS_NULL)
         }
 
         val me = securityHolder.user
@@ -42,7 +46,10 @@ class UserServiceImpl(
 
     @Transactional(readOnly = true)
     override fun getUserByLinkupId(linkupId: String): UserResponse {
-        val user = userRepository.findByLinkupId(linkupId) ?: throw CustomException(UserError.USER_NOT_FOUND)
+        val user = userRepository.findByLinkupId(linkupId) ?: throw CustomException(
+            UserError.USER_NOT_FOUND_BY_LINKUP_ID,
+            linkupId
+        )
 
         return UserResponse.of(user)
     }
