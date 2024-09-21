@@ -8,6 +8,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 class WebConfig : WebMvcConfigurer {
     override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
         registry.addResourceHandler("/uploads/**")
-            .addResourceLocations("file:/Users/dgsw52/Uploads/")
+            .addResourceLocations("file:/home/ubuntu/uploads/")
     }
 }

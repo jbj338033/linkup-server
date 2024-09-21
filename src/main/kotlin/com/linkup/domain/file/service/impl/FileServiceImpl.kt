@@ -11,7 +11,7 @@ import java.nio.file.Paths
 @Service
 class FileServiceImpl : FileService {
     companion object {
-        private const val UPLOAD_DIR = "/Users/dgsw52/Uploads"
+        private const val UPLOAD_DIR = "/home/ubuntu/uploads"
     }
 
     override fun uploadFiles(files: List<MultipartFile>): List<String> {
